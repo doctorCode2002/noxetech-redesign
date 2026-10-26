@@ -1,5 +1,7 @@
 import { CodeXml, Layers, Target } from "lucide-react";
 import { Eyebrow } from "../eyebrow";
+import { HeroBackdrop } from "../hero-art/hero-backdrop";
+import { WorkArt } from "../hero-art/work";
 
 // Original site copy, verbatim.
 const marks = [
@@ -10,7 +12,10 @@ const marks = [
 
 export function WorkHero() {
   return (
-    <section aria-labelledby="work-title" className="drafting-grid border-b border-rule">
+    <section aria-labelledby="work-title" className="drafting-grid relative isolate overflow-hidden border-b border-rule">
+      <HeroBackdrop>
+        <WorkArt />
+      </HeroBackdrop>
       <div className="shell pb-16 pt-16 sm:pb-20 sm:pt-20">
         <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
           <Eyebrow>SELECTED WORK</Eyebrow>

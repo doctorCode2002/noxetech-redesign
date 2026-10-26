@@ -147,7 +147,8 @@ export function Globe({ className = "" }: { className?: string }) {
       if (cancelled) return;
       const small = innerWidth < 640;
       const still = reduce;
-      const dpr = Math.min(devicePixelRatio || 1, small ? 1.5 : 2);
+      // The canvas is large on desktop; 1.5× keeps the dots crisp at well under 2×'s pixel cost.
+      const dpr = Math.min(devicePixelRatio || 1, 1.5);
       let size = el.offsetWidth;
       // Face the Middle East / Europe, where most routes are (COBE's location-to-angle mapping).
       const [lat, lng] = [32, 30];
@@ -275,7 +276,8 @@ export function Globe({ className = "" }: { className?: string }) {
         aria-hidden="true"
         fill
         loading="eager"
-        sizes="(min-width: 1024px) 46vw, 80vw"
+        fetchPriority="high"
+        sizes="(min-width: 1024px) 54vw, min(80vw, 320px)"
         draggable={false}
         className={`select-none transition-opacity duration-700 ${live ? "opacity-0" : ""}`}
       />

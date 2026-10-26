@@ -1,4 +1,6 @@
 import { Eyebrow } from "@/components/eyebrow";
+import { HeroBackdrop } from "@/components/hero-art/hero-backdrop";
+import { StartProjectArt } from "@/components/hero-art/start-project";
 import { IntakeWizard } from "@/components/intake/intake-wizard";
 import { TransitionLink } from "@/components/motion/transition-link";
 import { pageMeta } from "@/lib/meta";
@@ -19,7 +21,10 @@ const promises = [
 export default function StartProjectPage() {
   return (
     <>
-      <section className="drafting-grid border-b border-rule">
+      <section className="drafting-grid relative isolate overflow-hidden border-b border-rule">
+        <HeroBackdrop>
+          <StartProjectArt />
+        </HeroBackdrop>
         <div className="shell pb-16 pt-16 sm:pb-20 sm:pt-20">
           <Eyebrow>PROJECT INTAKE // STRUCTURED SCOPING WIZARD</Eyebrow>
           <h1 className="display mt-4 max-w-[18ch] text-[clamp(2.6rem,6vw,5rem)]">

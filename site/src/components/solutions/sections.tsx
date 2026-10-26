@@ -4,6 +4,8 @@ import { Eyebrow } from "../eyebrow";
 import { KineticHeading } from "../kinetic-heading";
 import { TransitionLink } from "../motion/transition-link";
 import { ProblemRouter } from "./problem-router";
+import { HeroBackdrop } from "../hero-art/hero-backdrop";
+import { SolutionsArt } from "../hero-art/solutions";
 import {
   capabilityAreas,
   capabilitySlug,
@@ -17,7 +19,10 @@ import {
 
 export function SolutionsHero() {
   return (
-    <section aria-labelledby="solutions-title" className="drafting-grid border-b border-rule">
+    <section aria-labelledby="solutions-title" className="drafting-grid relative isolate overflow-hidden border-b border-rule">
+      <HeroBackdrop>
+        <SolutionsArt />
+      </HeroBackdrop>
       <div className="shell grid gap-12 pb-16 pt-14 sm:pb-20 sm:pt-20 lg:grid-cols-12 lg:items-center">
         <div className="lg:col-span-7">
           <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
@@ -205,9 +210,13 @@ function ScenarioSection({ s, n }: { s: Scenario; n: number }) {
                   <TransitionLink
                     href={`/services#${capabilitySlug(a)}`}
                     sheetLabel="Services"
-                    className="inline-flex items-center gap-2 rounded-full border border-field bg-redline-wash px-3 py-1 text-sm font-medium hover:bg-field hover:text-on-field"
+                    className="group inline-flex items-center gap-2 rounded-full border border-field bg-redline-wash px-3 py-1 text-sm font-medium transition-colors hover:bg-field hover:text-on-field focus-visible:bg-field focus-visible:text-on-field"
                   >
-                    <span aria-hidden="true" className="size-2 rounded-full bg-field" />
+                    {/* The dot turns dark when the chip fills orange, so it never disappears into it. */}
+                    <span
+                      aria-hidden="true"
+                      className="size-2 rounded-full bg-field transition-colors group-hover:bg-on-field group-focus-visible:bg-on-field"
+                    />
                     {a}
                   </TransitionLink>
                 </li>

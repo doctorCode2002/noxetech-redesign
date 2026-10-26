@@ -18,24 +18,32 @@ export function whenIdle(cb: () => void, timeout = 2500) {
 }
 
 /**
- * Runs `cb` on the visitor's first scroll, touch, click or key press. Used for
- * scroll-driven sections, which are only seen after scrolling and are costly to set up.
+ * Runs `cb` once `el` is about to come into view (within `ahead` viewports below the fold), or
+ * straight away if it is already on screen or scrolled past. Phones use this for scroll-driven
+ * scenes: each is set up just before it is needed, in a short idle slot, instead of all at once
+ * inside the first touch (which made that first swipe stutter).
  */
-export function onFirstInteraction(cb: () => void) {
-  const events = ["wheel", "scroll", "touchstart", "pointerdown", "keydown"] as const;
+export function whenNear(el: Element, cb: () => void, ahead = 1.5) {
   let done = false;
+  let handle = 0;
   const run = () => {
     if (done) return;
     done = true;
-    off();
-    cb();
+    io.disconnect();
+    if ("requestIdleCallback" in window) handle = requestIdleCallback(cb, { timeout: 200 });
+    else handle = globalThis.setTimeout(cb, 0) as unknown as number;
   };
-  const off = () => events.forEach((e) => removeEventListener(e, run));
-  events.forEach((e) => addEventListener(e, run, { passive: true, once: true }));
-  // Arriving mid-page (back navigation, anchors) counts as already interacting.
-  if (scrollY > 0) queueMicrotask(run);
+  const io = new IntersectionObserver(
+    ([e]) => {
+      if (e.isIntersecting || e.boundingClientRect.top < 0) run();
+    },
+    { rootMargin: `0px 0px ${ahead * 100}% 0px` },
+  );
+  io.observe(el);
   return () => {
     done = true;
-    off();
+    io.disconnect();
+    if ("cancelIdleCallback" in window) cancelIdleCallback(handle);
+    clearTimeout(handle);
   };
 }

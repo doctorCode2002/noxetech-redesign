@@ -3,7 +3,7 @@
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { useRef } from "react";
-import { onFirstInteraction, whenIdle } from "@/lib/idle";
+import { whenIdle, whenNear } from "@/lib/idle";
 import { settleScrollTriggers } from "@/lib/scroll-settle";
 import { prefersReducedMotion } from "../motion/motion-provider";
 
@@ -16,7 +16,7 @@ export function IterationMotion({ children, ...props }: React.ComponentProps<"di
   useGSAP(
     (_ctx, contextSafe) => {
       if (prefersReducedMotion()) return;
-      const schedule = matchMedia("(min-width: 1024px) and (hover: hover)").matches ? whenIdle : onFirstInteraction;
+      const schedule = matchMedia("(min-width: 1024px) and (hover: hover)").matches ? whenIdle : (cb: () => void) => whenNear(root.current!, cb);
       const cancel = schedule(
         contextSafe!(() => {
           const to = (i: number) => ({ y: i * ROW, duration: 1, ease: "power1.inOut" });

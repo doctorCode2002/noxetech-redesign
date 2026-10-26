@@ -1,10 +1,15 @@
 import { Button } from "../button";
 import { Eyebrow } from "../eyebrow";
 import { pad, stageNames } from "./data";
+import { HeroBackdrop } from "../hero-art/hero-backdrop";
+import { HowWeWorkArt } from "../hero-art/how-we-work";
 
 export function Hero() {
   return (
-    <section aria-labelledby="hww-title" className="drafting-grid border-b border-rule">
+    <section aria-labelledby="hww-title" className="drafting-grid relative isolate overflow-hidden border-b border-rule">
+      <HeroBackdrop>
+        <HowWeWorkArt />
+      </HeroBackdrop>
       <div className="shell pb-16 pt-16 sm:pb-20 sm:pt-20">
         <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
           <Eyebrow>OUR PROCESS</Eyebrow>

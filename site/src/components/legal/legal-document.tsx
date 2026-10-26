@@ -1,5 +1,7 @@
 import { Eyebrow } from "../eyebrow";
 import { LegalReader } from "./legal-reader";
+import { HeroBackdrop } from "../hero-art/hero-backdrop";
+import { LegalArt } from "../hero-art/legal";
 
 export type LegalSection = { id: string; title: string; body: React.ReactNode };
 
@@ -32,7 +34,10 @@ export function LegalDocument({
 
   return (
     <>
-      <section className="drafting-grid border-b border-rule print:border-0 print:bg-none">
+      <section className="drafting-grid relative isolate overflow-hidden border-b border-rule print:border-0 print:bg-none">
+        <HeroBackdrop>
+          <LegalArt clauses={sections.length} seed={title.length} />
+        </HeroBackdrop>
         <div className="shell pb-16 pt-14 sm:pb-20 sm:pt-20 print:px-0 print:pb-8 print:pt-0">
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
             <Eyebrow>{label}</Eyebrow>

@@ -1,10 +1,15 @@
 import { ArrowRight } from "lucide-react";
 import { Button } from "../button";
 import { Eyebrow } from "../eyebrow";
+import { HeroBackdrop } from "../hero-art/hero-backdrop";
+import { ContactArt } from "../hero-art/contact";
 
 export function ContactHero() {
   return (
-    <section aria-labelledby="contact-title" className="drafting-grid border-b border-rule">
+    <section aria-labelledby="contact-title" className="drafting-grid relative isolate overflow-hidden border-b border-rule">
+      <HeroBackdrop>
+        <ContactArt />
+      </HeroBackdrop>
       <div className="shell grid gap-10 pb-16 pt-16 sm:pb-20 sm:pt-20 lg:grid-cols-12 lg:items-end">
         <div className="lg:col-span-7">
           <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">

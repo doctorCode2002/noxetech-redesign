@@ -5,6 +5,7 @@ import { useGSAP } from "@gsap/react";
 import { useRef, useState } from "react";
 import { ArrowDown } from "lucide-react";
 import { prefersReducedMotion } from "../motion/motion-provider";
+import { Collapse } from "../collapse";
 import { Scramble } from "../scramble";
 
 export type RouterScenario = {
@@ -19,7 +20,13 @@ export type RouterScenario = {
  * The signature piece: pick an operational problem and watch it route through its 4-stage process into
  * the combination of capability areas it needs. Without JavaScript it shows the first scenario's route.
  */
-export function ProblemRouter({ scenarios, areas }: { scenarios: RouterScenario[]; areas: readonly string[] }) {
+export function ProblemRouter({
+  scenarios,
+  areas,
+}: {
+  scenarios: RouterScenario[];
+  areas: readonly string[];
+}) {
   const root = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
   const s = scenarios[active];
@@ -89,9 +96,15 @@ export function ProblemRouter({ scenarios, areas }: { scenarios: RouterScenario[
 
   return (
     <div ref={root} className="overflow-hidden rounded-xl border border-ink bg-sheet">
-      <div data-board className="relative grid gap-8 p-4 sm:p-8 lg:grid-cols-[minmax(0,5fr)_minmax(0,4fr)_minmax(0,3fr)] lg:gap-16">
+      <div
+        data-board
+        className="relative grid gap-8 p-4 sm:p-8 lg:grid-cols-[minmax(0,5fr)_minmax(0,4fr)_minmax(0,3fr)] lg:gap-16"
+      >
         {/* Wiring (desktop only); purely illustrative, the lists carry the meaning. */}
-        <svg aria-hidden="true" className="pointer-events-none absolute inset-0 hidden size-full overflow-visible lg:block">
+        <svg
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 hidden size-full overflow-visible lg:block"
+        >
           {scenarios.map((_, i) => (
             <path
               key={i}
@@ -122,7 +135,11 @@ export function ProblemRouter({ scenarios, areas }: { scenarios: RouterScenario[
             {scenarios.map((sc, i) => {
               const on = i === active;
               return (
-                <li key={sc.id} data-problem className={`rounded-lg border transition-colors duration-200 ${on ? "border-field bg-field text-on-field" : "border-rule bg-sheet hover:border-ink"}`}>
+                <li
+                  key={sc.id}
+                  data-problem
+                  className={`rounded-lg border transition-colors duration-200 ${on ? "border-field bg-field text-on-field" : "border-rule bg-sheet hover:border-ink"}`}
+                >
                   <button
                     type="button"
                     aria-pressed={on}
@@ -134,7 +151,8 @@ export function ProblemRouter({ scenarios, areas }: { scenarios: RouterScenario[
                     </span>
                     <span className="font-semibold leading-snug">{sc.title}</span>
                   </button>
-                  {on && (
+                  {/* Both open smoothly under the chosen problem; the previous one closes as smoothly. */}
+                  <Collapse open={on}>
                     <div className="-mt-1 px-4 pb-4 pl-12">
                       <p className="text-[0.95rem] leading-snug">{sc.subtitle}</p>
                       <a
@@ -145,14 +163,14 @@ export function ProblemRouter({ scenarios, areas }: { scenarios: RouterScenario[
                         <ArrowDown aria-hidden="true" className="size-4" />
                       </a>
                     </div>
-                  )}
-                  {on && (
-                    /* Phones: the route opens right under the chosen problem. */
-                    <div className="mx-2 mb-2 grid gap-6 rounded-md bg-sheet p-4 text-ink lg:hidden">
-                      <Process s={s} />
-                      <Areas areas={areas} lit={lit} />
+                  </Collapse>
+                  {/* Phones: the route opens right under the chosen problem. */}
+                  <Collapse open={on} className="lg:hidden">
+                    <div className="mx-2 mb-2 grid gap-6 rounded-md bg-sheet p-4 text-ink">
+                      <Process s={sc} dealt={on} />
+                      <Areas areas={areas} lit={new Set(sc.areas)} />
                     </div>
-                  )}
+                  </Collapse>
                 </li>
               );
             })}
@@ -170,7 +188,15 @@ export function ProblemRouter({ scenarios, areas }: { scenarios: RouterScenario[
   );
 }
 
-function Process({ s, wired = false }: { s: RouterScenario; wired?: boolean }) {
+function Process({
+  s,
+  wired = false,
+  dealt = true,
+}: {
+  s: RouterScenario;
+  wired?: boolean;
+  dealt?: boolean;
+}) {
   return (
     <>
       <p className="figures text-xs text-ink-3">4-STAGE PROCESS</p>
@@ -179,7 +205,11 @@ function Process({ s, wired = false }: { s: RouterScenario; wired?: boolean }) {
         className="mt-4 grid gap-2 rounded-lg border border-ink bg-paper p-2"
       >
         {s.stages.map((st) => (
-          <li key={`${s.id}-${st.step}`} data-stage className="rounded-md bg-sheet px-4 py-3">
+          <li
+            key={`${s.id}-${st.step}`}
+            {...(dealt ? { "data-stage": "" } : {})}
+            className="rounded-md bg-sheet px-4 py-3"
+          >
             <p className="figures text-xs text-redline-ink">
               <Scramble>{st.step}</Scramble>
             </p>
@@ -191,7 +221,15 @@ function Process({ s, wired = false }: { s: RouterScenario; wired?: boolean }) {
   );
 }
 
-function Areas({ areas, lit, wired = false }: { areas: readonly string[]; lit: Set<string>; wired?: boolean }) {
+function Areas({
+  areas,
+  lit,
+  wired = false,
+}: {
+  areas: readonly string[];
+  lit: Set<string>;
+  wired?: boolean;
+}) {
   return (
     <>
       <p className="figures text-xs text-ink-3">Relevant Capability Areas:</p>
@@ -204,7 +242,10 @@ function Areas({ areas, lit, wired = false }: { areas: readonly string[]; lit: S
               {...(wired ? { "data-area": "" } : {})}
               className={`flex items-center gap-2 rounded-lg border px-3 py-2 text-[0.95rem] leading-snug transition-colors duration-300 lg:py-3 ${on ? "border-field bg-redline-wash font-semibold text-ink" : "border-rule text-ink-3"}`}
             >
-              <span aria-hidden="true" className={`size-2 shrink-0 rounded-full ${on ? "bg-field" : "bg-rule-strong"}`} />
+              <span
+                aria-hidden="true"
+                className={`size-2 shrink-0 rounded-full ${on ? "bg-field" : "bg-rule-strong"}`}
+              />
               {a}
               {!on && <span className="sr-only"> (not used)</span>}
             </li>

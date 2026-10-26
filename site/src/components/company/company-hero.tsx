@@ -2,6 +2,8 @@ import { Compass, Layers, SquareTerminal } from "lucide-react";
 import { Button } from "../button";
 import { Eyebrow } from "../eyebrow";
 import { KineticHeading } from "../kinetic-heading";
+import { HeroBackdrop } from "../hero-art/hero-backdrop";
+import { CompanyArt } from "../hero-art/company";
 
 // Original site copy, verbatim.
 const tags = [
@@ -12,7 +14,10 @@ const tags = [
 
 export function CompanyHero() {
   return (
-    <section aria-labelledby="company-title" className="drafting-grid border-b border-rule">
+    <section aria-labelledby="company-title" className="drafting-grid relative isolate overflow-hidden border-b border-rule">
+      <HeroBackdrop>
+        <CompanyArt />
+      </HeroBackdrop>
       <div className="shell pb-16 pt-16 sm:pb-24 sm:pt-20">
         <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
           <Eyebrow>ABOUT NOXETECH</Eyebrow>

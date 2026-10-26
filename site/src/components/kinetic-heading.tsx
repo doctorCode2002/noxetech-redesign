@@ -75,7 +75,7 @@ export function KineticHeading({
           repeat: 1,
           stagger: { each: 0.022, from: "start" },
           // On a first visit, wait for the loader to wipe away.
-          delay: document.documentElement.hasAttribute("data-skip-loader") ? 0 : 1.6,
+          delay: document.documentElement.hasAttribute("data-skip-loader") ? 0 : 1, // after the ~1s loader
           onStart: () => (rippling = true),
           onComplete: () => {
             rippling = false;

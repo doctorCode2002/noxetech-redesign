@@ -2,6 +2,8 @@ import { Button } from "../button";
 import { Eyebrow } from "../eyebrow";
 import { AnchorLink } from "./anchor-link";
 import { capabilities, num, tiers } from "./data";
+import { HeroBackdrop } from "../hero-art/hero-backdrop";
+import { ServicesArt } from "../hero-art/services";
 
 const approach = ["Requirements-Driven", "Custom Software", "System Integrations", "Reliable Deployment"];
 
@@ -56,7 +58,13 @@ function MatrixMap() {
 
 export function ServicesHero() {
   return (
-    <section aria-labelledby="services-title" className="drafting-grid border-b border-rule">
+    <section
+      aria-labelledby="services-title"
+      className="drafting-grid relative isolate overflow-hidden border-b border-rule"
+    >
+      <HeroBackdrop>
+        <ServicesArt />
+      </HeroBackdrop>
       <div className="shell grid gap-12 pb-16 pt-16 sm:pb-20 sm:pt-20 lg:grid-cols-12 lg:items-center lg:gap-8">
         <div className="lg:col-span-7">
           <Eyebrow>ENGINEERING CAPABILITIES</Eyebrow>
@@ -66,8 +74,8 @@ export function ServicesHero() {
           </h1>
           <p className="mt-6 max-w-[58ch] text-[1.1rem] text-ink-2">
             NoxeTech designs, develops, integrates, and delivers custom software across six core capability
-            areas—combining user interfaces, business logic, system integrations, and supporting infrastructure
-            tailored to your project’s goals.
+            areas—combining user interfaces, business logic, system integrations, and supporting
+            infrastructure tailored to your project’s goals.
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
             <Button href="/start-project">Start a Project</Button>

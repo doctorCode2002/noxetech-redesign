@@ -135,6 +135,7 @@ export function Header() {
                   <li key={item.href}>
                     <TransitionLink
                       href={item.href}
+                      prefetch={null}
                       aria-current={isCurrent(item.href) ? "page" : undefined}
                       className="block whitespace-nowrap rounded-full px-3 py-2 text-[0.92rem] xl:px-4 text-ink-2 transition-colors duration-150 hover:bg-redline-wash hover:text-ink aria-[current=page]:bg-ink aria-[current=page]:text-paper"
                     >

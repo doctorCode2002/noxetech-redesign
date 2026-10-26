@@ -5,7 +5,7 @@ import { useSyncExternalStore } from "react";
 
 type Theme = "light" | "dark";
 
-const current = (): Theme => (document.documentElement.dataset.theme === "dark" ? "dark" : "light");
+const current = (): Theme => (document.documentElement.dataset.theme === "light" ? "light" : "dark");
 
 /** Re-renders whenever <html data-theme> changes, whoever changed it. */
 function subscribe(cb: () => void) {
@@ -25,7 +25,7 @@ function apply(theme: Theme, save: boolean) {
 
 /** Light/dark switch: two states only. The choice is remembered across visits. */
 export function ThemeToggle() {
-  const theme = useSyncExternalStore(subscribe, current, () => "light" as Theme);
+  const theme = useSyncExternalStore(subscribe, current, () => "dark" as Theme);
   const next: Theme = theme === "dark" ? "light" : "dark";
 
   function onClick(e: React.MouseEvent<HTMLButtonElement>) {
@@ -48,7 +48,7 @@ export function ThemeToggle() {
       onClick={onClick}
       aria-label={`Switch to ${next} theme`}
       title={`Switch to ${next} theme`}
-      className="inline-flex size-12 items-center justify-center rounded-full border border-rule bg-sheet/90 text-ink shadow-sheet backdrop-blur-md transition-colors duration-150 hover:border-ink"
+      className="inline-flex size-12 items-center justify-center rounded-full border border-rule bg-sheet text-ink shadow-sheet transition-colors duration-150 hover:border-ink"
     >
       <Icon className="size-5" strokeWidth={1.75} />
     </button>

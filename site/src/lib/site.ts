@@ -44,3 +44,21 @@ export const legalNav = [
   { href: "/terms", label: "Terms" },
   { href: "/legal/refund", label: "Payment Policy" },
 ] as const;
+
+/** The name shown on the page-transition sheet for each route (nav wording where there is one). */
+export const pageTitles: Record<string, string> = {
+  "/": "Home",
+  "/services": "Services",
+  "/solutions": "Solutions",
+  "/solutions/sms-switch": "SMS Switch",
+  "/solutions/sms-switch/custom-request": "Custom Version",
+  "/work": "Our Work",
+  "/how-we-work": "How We Work",
+  "/company": "Company",
+  "/contact": "Contact",
+  "/start-project": "Start a Project",
+  "/portal": "Client Portal",
+  "/privacy": "Privacy Policy",
+  "/terms": "Terms of Use",
+  "/legal/refund": "Payment Policy",
+};

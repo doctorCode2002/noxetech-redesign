@@ -3,6 +3,8 @@ import { RoutingConsole } from "../home/routing-console";
 import { KineticHeading } from "../kinetic-heading";
 import { JumpButton, PackageLink } from "./package-link";
 import { SubnavLink } from "./subnav-link";
+import { HeroBackdrop } from "../hero-art/hero-backdrop";
+import { SmsSwitchArt } from "../hero-art/sms-switch";
 
 // Original sub-navigation, verbatim.
 const subnav = [
@@ -17,8 +19,11 @@ export function SmsHero() {
     <section
       id="overview"
       aria-labelledby="sms-hero-title"
-      className="drafting-grid scroll-mt-24 border-b border-rule"
+      className="drafting-grid relative isolate overflow-hidden scroll-mt-24 border-b border-rule"
     >
+      <HeroBackdrop>
+        <SmsSwitchArt />
+      </HeroBackdrop>
       <div className="shell">
         <nav
           aria-label="SMS Switch"

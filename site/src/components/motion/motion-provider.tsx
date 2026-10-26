@@ -6,6 +6,8 @@ import { DrawSVGPlugin } from "gsap/DrawSVGPlugin";
 import { useGSAP } from "@gsap/react";
 import Lenis from "lenis";
 import { settleScrollTriggers } from "@/lib/scroll-settle";
+import { pageTitles } from "@/lib/site";
+import { LogoMarkMono } from "../logo";
 import { usePathname, useRouter } from "next/navigation";
 import { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
 
@@ -71,6 +73,8 @@ export function MotionProvider({ children }: { children: React.ReactNode }) {
   const [lenis, setLenis] = useState<Lenis | null>(null);
   const cover = useRef<HTMLDivElement>(null);
   const label = useRef<HTMLSpanElement>(null);
+  const route = useRef<HTMLSpanElement>(null);
+  const intro = useRef<gsap.core.Timeline | null>(null);
   const covering = useRef(false);
   const lastPath = useRef(pathname);
 
@@ -134,17 +138,41 @@ export function MotionProvider({ children }: { children: React.ReactNode }) {
 
       covering.current = true;
       lockScroll(lenis);
-      if (label.current) label.current.textContent = text ?? "";
-      gsap
-        .timeline({ onComplete: () => router.push(href, { scroll: false }) })
-        .set(cover.current, { autoAlpha: 1, clipPath: "inset(100% 0 0 0)" })
-        .to(cover.current, { clipPath: "inset(0% 0 0 0)", duration: 0.42, ease: "expo.inOut" })
+      if (label.current) label.current.textContent = pageTitles[target.pathname] ?? text ?? "";
+      if (route.current) route.current.textContent = target.pathname;
+      const c = cover.current;
+      // The sheet covers the page, then the route starts loading straight away while the mark
+      // draws itself and the title rises, so the animation overlaps the load instead of adding to it.
+      intro.current?.kill();
+      intro.current = gsap
+        .timeline()
+        .set(c, { autoAlpha: 1, clipPath: "inset(100% 0 0 0)" })
+        .to(c, { clipPath: "inset(0% 0 0 0)", duration: 0.42, ease: "expo.inOut" })
+        .call(() => router.push(href, { scroll: false }))
         .fromTo("[data-cover-rule]", { scaleX: 0 }, { scaleX: 1, duration: 0.5, ease: "expo.out" }, 0.12)
+        .fromTo(
+          c.querySelectorAll("[data-cover-logo] path"),
+          { drawSVG: "0%" },
+          { drawSVG: "100%", duration: 0.5, stagger: 0.05, ease: "power2.inOut" },
+          0.2,
+        )
+        .fromTo(
+          c.querySelectorAll("[data-cover-logo] circle"),
+          { scale: 0, transformOrigin: "50% 50%" },
+          { scale: 1, duration: 0.3, ease: "back.out(3)", stagger: 0.08 },
+          0.55,
+        )
+        .fromTo(
+          "[data-cover-meta]",
+          { autoAlpha: 0, y: 8 },
+          { autoAlpha: 1, y: 0, duration: 0.35, ease: "expo.out", stagger: 0.06 },
+          0.3,
+        )
         .fromTo(
           label.current,
           { yPercent: 60, autoAlpha: 0 },
-          { yPercent: 0, autoAlpha: 1, duration: 0.35, ease: "expo.out" },
-          0.22,
+          { yPercent: 0, autoAlpha: 1, duration: 0.45, ease: "expo.out" },
+          0.28,
         );
     },
     [lenis, router],
@@ -175,11 +203,17 @@ export function MotionProvider({ children }: { children: React.ReactNode }) {
     }
     if (covering.current && cover.current) {
       covering.current = false;
-      gsap
-        .timeline()
-        .to(cover.current, { clipPath: "inset(0 0 100% 0)", duration: 0.55, ease: "expo.inOut" })
-        .set(cover.current, { autoAlpha: 0 })
-        .fromTo(page, { y: 32 }, { y: 0, duration: 0.8, ease: "expo.out", clearProps: "transform" }, 0.1);
+      const c = cover.current;
+      const uncover = () =>
+        gsap
+          .timeline()
+          .to(c, { clipPath: "inset(0 0 100% 0)", duration: 0.55, ease: "expo.inOut" })
+          .set(c, { autoAlpha: 0 })
+          .fromTo(page, { y: 32 }, { y: 0, duration: 0.8, ease: "expo.out", clearProps: "transform" }, 0.1);
+      // Lift the sheet once the new page is here and the mark has finished drawing.
+      const t = intro.current;
+      if (t && t.isActive()) t.eventCallback("onComplete", uncover);
+      else uncover();
     } else if (page) {
       gsap.fromTo(
         page,
@@ -198,7 +232,21 @@ export function MotionProvider({ children }: { children: React.ReactNode }) {
         className="pointer-events-none invisible fixed inset-0 z-[70] bg-field text-on-field"
       >
         <div data-cover-rule className="absolute inset-x-0 top-0 h-1 origin-left bg-on-field" />
-        <div className="shell flex h-full items-end pb-[10vh]">
+        <div className="shell flex h-full flex-col justify-between pb-[10vh] pt-[12vh]">
+          <div className="flex items-center justify-between gap-4">
+            <span className="flex items-center gap-3">
+              <span data-cover-logo>
+                <LogoMarkMono className="size-12 sm:size-16" />
+              </span>
+              <span
+                data-cover-meta
+                className="text-[1.5rem] font-semibold tracking-[-0.01em] [font-stretch:88%]"
+              >
+                NoxeTech
+              </span>
+            </span>
+            <span ref={route} data-cover-meta className="figures text-sm" />
+          </div>
           <span ref={label} className="mega text-[clamp(3.5rem,13vw,12rem)] [font-stretch:80%]" />
         </div>
       </div>

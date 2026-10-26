@@ -1,12 +1,17 @@
 import { PortalSignIn } from "@/components/portal/portal-sign-in";
 import { pageMeta } from "@/lib/meta";
+import { HeroBackdrop } from "@/components/hero-art/hero-backdrop";
+import { PortalArt } from "@/components/hero-art/portal";
 
 export const metadata = pageMeta("/portal", "Customer Portal Sign-In — NoxeTech", "Use the same business email used for your NoxeTech order. Access your orders, payments, and invoices via secure email magic link.");
 
 // Original site copy, verbatim.
 export default function PortalPage() {
   return (
-    <section className="drafting-grid border-b border-rule">
+    <section className="drafting-grid relative isolate overflow-hidden border-b border-rule">
+      <HeroBackdrop>
+        <PortalArt />
+      </HeroBackdrop>
       <div className="shell flex min-h-[calc(100svh-5.25rem)] flex-col justify-center py-16 sm:py-20">
         <PortalSignIn>
           <h1 className="display max-w-[14ch] text-[clamp(2.6rem,6vw,5rem)]">Customer Portal Sign-In</h1>

@@ -7,6 +7,7 @@ import { ChevronDown, Printer } from "lucide-react";
 import { useRef } from "react";
 import { Button } from "../button";
 import { settleScrollTriggers } from "@/lib/scroll-settle";
+import { SmoothDetails } from "../collapse";
 
 type Entry = { id: string; n: string; text: string };
 
@@ -33,7 +34,9 @@ export function LegalReader({ toc, children }: { toc: Entry[]; children: React.R
         const links = r.querySelectorAll<HTMLElement>(`[data-toc="${id}"]`);
         const fills = r.querySelectorAll<HTMLElement>(`[data-toc="${id}"] [data-fill]`);
         const mark = (on: boolean) =>
-          links.forEach((l) => (on ? l.setAttribute("aria-current", "location") : l.removeAttribute("aria-current")));
+          links.forEach((l) =>
+            on ? l.setAttribute("aria-current", "location") : l.removeAttribute("aria-current"),
+          );
         ScrollTrigger.create({
           trigger: clause,
           start: line,
@@ -103,11 +106,19 @@ export function LegalReader({ toc, children }: { toc: Entry[]; children: React.R
         </aside>
 
         <div className="min-w-0 lg:col-span-8 lg:col-start-5">
-          <details className="group mb-12 rounded-xl border border-rule bg-sheet lg:hidden print:hidden">
-            <summary className="flex cursor-pointer list-none items-center justify-between px-4 py-4 text-xs font-semibold uppercase tracking-[0.12em] text-ink [&::-webkit-details-marker]:hidden">
-              Contents
-              <ChevronDown aria-hidden="true" className="size-4 transition-transform group-open:rotate-180" />
-            </summary>
+          <SmoothDetails
+            className="group mb-12 rounded-xl border border-rule bg-sheet lg:hidden print:hidden"
+            summaryClassName="flex cursor-pointer list-none items-center justify-between px-4 py-4 text-xs font-semibold uppercase tracking-[0.12em] text-ink [&::-webkit-details-marker]:hidden"
+            summary={
+              <>
+                Contents
+                <ChevronDown
+                  aria-hidden="true"
+                  className="size-4 transition-transform duration-300 group-data-[expanded]:rotate-180"
+                />
+              </>
+            }
+          >
             <ol className="grid border-t border-rule px-4 py-2">
               {toc.map((t) => (
                 <li key={t.id}>
@@ -115,7 +126,7 @@ export function LegalReader({ toc, children }: { toc: Entry[]; children: React.R
                     href={`#${t.id}`}
                     data-toc={t.id}
                     className="flex gap-3 py-2 text-[0.95rem] text-ink-2 hover:text-ink aria-[current=location]:font-semibold aria-[current=location]:text-ink"
-                    onClick={(e) => e.currentTarget.closest("details")?.removeAttribute("open")}
+                    onClick={(e) => e.currentTarget.closest("details")?.querySelector("summary")?.click()}
                   >
                     {t.n && <span className="figures text-redline-ink">{t.n}.</span>}
                     <span>{t.text}</span>
@@ -123,7 +134,7 @@ export function LegalReader({ toc, children }: { toc: Entry[]; children: React.R
                 </li>
               ))}
             </ol>
-          </details>
+          </SmoothDetails>
 
           <article data-article className="max-w-[68ch] print:max-w-none">
             {children}

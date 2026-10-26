@@ -16,21 +16,34 @@ export function FloatingControls() {
 
   useEffect(() => {
     let frame = 0;
+    // Page height is cached and only re-read when the layout actually changes size, so scrolling
+    // never forces a layout just to draw the ring.
+    let max = 1;
+    const measure = () => {
+      max = Math.max(1, document.documentElement.scrollHeight - innerHeight);
+    };
     const update = () => {
       frame = 0;
-      const max = document.documentElement.scrollHeight - innerHeight;
-      setPast(scrollY > innerHeight);
+      const y = scrollY;
+      setPast(y > innerHeight);
       // The ring around the arrow shows how far down the page you are.
-      ring.current?.style.setProperty("stroke-dashoffset", String(C * (1 - (max > 0 ? scrollY / max : 0))));
+      ring.current?.style.setProperty("stroke-dashoffset", String(C * (1 - Math.min(1, y / max))));
     };
     const onScroll = () => {
       if (!frame) frame = requestAnimationFrame(update);
     };
+    const ro = new ResizeObserver(() => {
+      measure();
+      onScroll();
+    });
+    ro.observe(document.body);
+    measure();
     update();
     addEventListener("scroll", onScroll, { passive: true });
     addEventListener("resize", onScroll);
     return () => {
       cancelAnimationFrame(frame);
+      ro.disconnect();
       removeEventListener("scroll", onScroll);
       removeEventListener("resize", onScroll);
     };
@@ -52,7 +65,7 @@ export function FloatingControls() {
         title="Back to top"
         tabIndex={past ? 0 : -1}
         aria-hidden={!past}
-        className={`absolute bottom-[calc(100%+0.5rem)] left-0 inline-flex size-12 items-center justify-center rounded-full border border-rule bg-sheet/90 text-ink shadow-sheet backdrop-blur-md transition-[opacity,transform,border-color] duration-300 ease-out-expo hover:border-ink ${
+        className={`absolute bottom-[calc(100%+0.5rem)] left-0 inline-flex size-12 items-center justify-center rounded-full border border-rule bg-sheet text-ink shadow-sheet transition-[opacity,transform,border-color] duration-300 ease-out-expo hover:border-ink ${
           past ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-3 opacity-0"
         }`}
       >

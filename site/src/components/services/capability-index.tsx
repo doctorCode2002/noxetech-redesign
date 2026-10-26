@@ -47,7 +47,7 @@ export function CapabilityIndex() {
       <nav aria-label="Capabilities" className="sticky top-20 z-30 -mx-4 px-4 pt-2 sm:-mx-8 sm:px-8 lg:hidden">
         <div
           ref={strip}
-          className="no-scrollbar flex gap-1 overflow-x-auto rounded-full border border-rule bg-sheet/90 p-1 shadow-sheet backdrop-blur-md"
+          className="no-scrollbar flex gap-1 overflow-x-auto rounded-full border border-rule bg-sheet p-1 shadow-sheet"
         >
           {capabilities.map((c, i) => (
             <AnchorLink

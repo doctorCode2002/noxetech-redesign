@@ -43,15 +43,13 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f3f4f5" },
-    { media: "(prefers-color-scheme: dark)", color: "#15171b" },
-  ],
+  // Dark is the default theme, so the browser chrome matches it.
+  themeColor: "#0c0d10",
 };
 
-// Runs before first paint: applies the saved theme (the system setting only picks the first one),
+// Runs before first paint: applies the saved theme (dark unless the visitor chose light),
 // and skips the loader after its first showing in this session.
-const themeScript = `(function(){var h=document.documentElement;try{var t=localStorage.getItem('theme');var d=t==='dark'||(t!=='light'&&matchMedia('(prefers-color-scheme: dark)').matches);h.dataset.theme=d?'dark':'light'}catch(e){}try{if(sessionStorage.getItem('nx-intro'))h.dataset.skipLoader='';else sessionStorage.setItem('nx-intro','1')}catch(e){}})()`;
+const themeScript = `(function(){var h=document.documentElement;try{var t=localStorage.getItem('theme');var d=t!=='light';h.dataset.theme=d?'dark':'light'}catch(e){}try{if(sessionStorage.getItem('nx-intro'))h.dataset.skipLoader='';else sessionStorage.setItem('nx-intro','1')}catch(e){}})()`;
 
 const organization = {
   "@context": "https://schema.org",
@@ -68,7 +66,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      data-theme="light"
+      data-theme="dark"
       suppressHydrationWarning
       className={`${plexSans.variable} ${plexMono.variable}`}
     >

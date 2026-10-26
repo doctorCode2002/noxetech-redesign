@@ -239,19 +239,20 @@ html, body { overflow-x: clip; }
   .capsule-fold { transition: none; }
 }
 
-/* Loader (CSS only). Total ~1.7s: draw + count for 1.1s, then the panel wipes up. */
+/* Loader (CSS only), first visit only. Total ~1.05s: draw + count for 0.6s, then the panel wipes up.
+   Kept short: it hides the page, so it counts against every load metric. */
 @property --load { syntax: "<integer>"; initial-value: 0; inherits: false; }
 .loader {
-  animation: loader-out 650ms cubic-bezier(0.76, 0, 0.24, 1) 1.1s forwards;
+  animation: loader-out 450ms cubic-bezier(0.76, 0, 0.24, 1) 0.6s forwards;
 }
 html[data-skip-loader] .loader { display: none; }
-.loader-mark path { stroke-dasharray: 1; stroke-dashoffset: 1; animation: loader-draw 900ms cubic-bezier(0.65, 0, 0.35, 1) forwards; }
-.loader-mark path:nth-child(2) { animation-delay: 80ms; }
-.loader-mark path:nth-child(3) { animation-delay: 160ms; }
-.loader-mark path:nth-child(4) { animation-delay: 240ms; }
-.loader-mark path:nth-child(5) { animation-delay: 320ms; }
-.loader-bar { transform: scaleX(0); animation: loader-bar 1s cubic-bezier(0.65, 0, 0.35, 1) 0.1s forwards; }
-.loader-count { --load: 0; counter-reset: load var(--load); animation: loader-count 1s cubic-bezier(0.65, 0, 0.35, 1) 0.1s forwards; }
+.loader-mark path { stroke-dasharray: 1; stroke-dashoffset: 1; animation: loader-draw 520ms cubic-bezier(0.65, 0, 0.35, 1) forwards; }
+.loader-mark path:nth-child(2) { animation-delay: 40ms; }
+.loader-mark path:nth-child(3) { animation-delay: 80ms; }
+.loader-mark path:nth-child(4) { animation-delay: 120ms; }
+.loader-mark path:nth-child(5) { animation-delay: 160ms; }
+.loader-bar { transform: scaleX(0); animation: loader-bar 0.55s cubic-bezier(0.65, 0, 0.35, 1) 0.05s forwards; }
+.loader-count { --load: 0; counter-reset: load var(--load); animation: loader-count 0.55s cubic-bezier(0.65, 0, 0.35, 1) 0.05s forwards; }
 .loader-count::after { content: counter(load) "%"; }
 @keyframes loader-draw { to { stroke-dashoffset: 0; } }
 @keyframes loader-bar { to { transform: scaleX(1); } }
@@ -352,7 +353,34 @@ html {
     --rule: #c9ccd2; --rule-strong: #9a9fa8; --redline-ink: #9a3412; --redline-wash: transparent;
     color-scheme: light;
   }
-  body > header, header.fixed, footer, .loader, .fixed { display: none !important; }
+  body > header, header.fixed, footer, .loader, .fixed, .hero-backdrop { display: none !important; }
   #main { padding-top: 0 !important; }
   .shell { max-width: none; padding-inline: 0; }
+}
+
+/* Inner-page hero backgrounds (components/hero-art). The hero section is `relative isolate`;
+   the art sits behind its copy, fades out toward the text, and only ever animates transform
+   and opacity. */
+.hero-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+  mask-image: linear-gradient(to bottom, #000 0%, rgb(0 0 0 / 0.35) 55%, transparent 85%);
+}
+.hero-backdrop svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+@media (min-width: 1024px) {
+  .hero-backdrop {
+    mask-image: linear-gradient(to right, transparent 30%, rgb(0 0 0 / 0.6) 46%, #000 60%);
+  }
+}
+.hero-backdrop[data-paused] * { animation-play-state: paused !important; }
+@media (prefers-reduced-motion: reduce) {
+  .hero-backdrop * { animation: none !important; }
 }

@@ -3,6 +3,7 @@ import { Button } from "../button";
 import { Eyebrow } from "../eyebrow";
 import { KineticHeading } from "../kinetic-heading";
 import { pad } from "./data";
+import { SmoothDetails } from "../collapse";
 
 // Original site copy, verbatim, for the sections after the stages.
 
@@ -31,17 +32,19 @@ export function Collaboration() {
             How We Collaborate on Projects
           </h2>
           <p className="text-ink-2 lg:col-span-5">
-            Successful custom software is the product of disciplined engineering combined with deep domain knowledge
-            from your team. We structure collaboration around clear roles and transparency.
+            Successful custom software is the product of disciplined engineering combined with deep domain
+            knowledge from your team. We structure collaboration around clear roles and transparency.
           </p>
         </div>
 
         <div className="mt-12 grid gap-4 lg:grid-cols-2">
           <div className="rounded-xl border border-rule p-6 sm:p-8">
-            <h3 className="text-[1.45rem] font-semibold leading-tight [font-stretch:85%]">What You Bring to the Project</h3>
+            <h3 className="text-[1.45rem] font-semibold leading-tight [font-stretch:85%]">
+              What You Bring to the Project
+            </h3>
             <p className="mt-3 text-ink-2">
-              The most successful custom software projects benefit from active collaboration and domain knowledge
-              from your team.
+              The most successful custom software projects benefit from active collaboration and domain
+              knowledge from your team.
             </p>
             <ul className="mt-6 divide-y divide-rule border-y border-rule">
               {bring.map((b) => (
@@ -57,8 +60,8 @@ export function Collaboration() {
               What NoxeTech Delivers as Your Engineering Partner
             </h3>
             <p className="mt-3 text-ink-2">
-              We take responsibility for translating your organizational goals into reliable, maintainable software
-              architecture.
+              We take responsibility for translating your organizational goals into reliable, maintainable
+              software architecture.
             </p>
             <ul className="mt-6 divide-y divide-rule border-y border-rule">
               {deliver.map((d) => (
@@ -73,8 +76,9 @@ export function Collaboration() {
         <p className="mt-4 flex gap-3 rounded-xl bg-ground p-6 text-on-ground-2 sm:px-8">
           <MessageSquare aria-hidden="true" className="mt-1 size-5 shrink-0 text-field" />
           <span>
-            <strong className="font-semibold text-on-ground">Transparent Communication:</strong> Project updates focus
-            on architectural decisions, milestone progress, and scope adjustments without unnecessary technical jargon.
+            <strong className="font-semibold text-on-ground">Transparent Communication:</strong> Project
+            updates focus on architectural decisions, milestone progress, and scope adjustments without
+            unnecessary technical jargon.
           </span>
         </p>
       </div>
@@ -116,8 +120,8 @@ export function Intake() {
               You Do Not Need a Finished Specification to Start
             </h2>
             <p className="mt-6 max-w-[60ch] text-ink-2">
-              Every project begins from a different starting point. Whether you have a raw concept, an operational
-              pain point, or detailed wireframes, our team adapts to your level of preparation.
+              Every project begins from a different starting point. Whether you have a raw concept, an
+              operational pain point, or detailed wireframes, our team adapts to your level of preparation.
             </p>
           </div>
           <div className="lg:col-span-4 lg:text-right">
@@ -143,7 +147,9 @@ export function Intake() {
             </li>
           ))}
           <li className="flex flex-col rounded-xl bg-field p-6 text-on-field">
-            <p className="figures text-xs uppercase tracking-[0.12em] text-on-field/75">{"// GUIDED INTAKE"}</p>
+            <p className="figures text-xs uppercase tracking-[0.12em] text-on-field/75">
+              {"// GUIDED INTAKE"}
+            </p>
             <h3 className="display mt-4 text-[2rem]">7-Step Scoping Wizard</h3>
             <p className="mt-3 flex-1 text-[0.975rem] font-medium">
               Use our structured project inquiry tool to outline project type, platforms, integrations, and
@@ -193,15 +199,17 @@ export function Pragmatic() {
             </h2>
             <p className="text-on-ground-2 lg:col-span-6">
               We do not impose a single rigid tech stack on every client. Frameworks, databases, hosting
-              environments, and integration tools are selected according to your specific functional requirements,
-              operational constraints, and long-term maintainability.
+              environments, and integration tools are selected according to your specific functional
+              requirements, operational constraints, and long-term maintainability.
             </p>
           </div>
           <ul className="mt-12 grid gap-px overflow-hidden rounded-xl border border-ground-rule bg-ground-rule sm:grid-cols-2">
             {criteria.map((c, i) => (
               <li key={c.title} className="bg-ground p-6 sm:p-8">
                 <p className="figures text-xs text-field">{pad(i + 1)}</p>
-                <h3 className="mt-4 text-[1.45rem] font-semibold leading-tight [font-stretch:85%]">{c.title}</h3>
+                <h3 className="mt-4 text-[1.45rem] font-semibold leading-tight [font-stretch:85%]">
+                  {c.title}
+                </h3>
                 <p className="mt-3 max-w-[52ch] text-on-ground-2">{c.text}</p>
               </li>
             ))}
@@ -246,21 +254,28 @@ export function Faq() {
               Frequently Asked Questions About Working With Us
             </h2>
             <p className="mt-6 max-w-[40ch] text-ink-2">
-              Straightforward answers regarding our engineering intake, technical decisions, and project workflow.
+              Straightforward answers regarding our engineering intake, technical decisions, and project
+              workflow.
             </p>
           </div>
         </div>
         <div className="border-t border-ink lg:col-span-8">
           {faqs.map(([q, a]) => (
-            <details key={q} className="group border-b border-rule">
-              <summary className="flex list-none items-start justify-between gap-6 py-6 text-[1.15rem] font-semibold leading-snug transition-colors hover:text-redline-ink [&::-webkit-details-marker]:hidden">
-                {q}
-                <span className="mt-1 grid size-6 shrink-0 place-items-center rounded-full border border-rule-strong transition-[transform,background-color,border-color] duration-300 ease-out-expo group-open:rotate-45 group-open:border-field group-open:bg-field group-open:text-on-field">
-                  <Plus aria-hidden="true" className="size-4" />
-                </span>
-              </summary>
+            <SmoothDetails
+              key={q}
+              className="group border-b border-rule"
+              summaryClassName="flex cursor-pointer list-none items-start justify-between gap-6 py-6 text-[1.15rem] font-semibold leading-snug transition-colors hover:text-redline-ink [&::-webkit-details-marker]:hidden"
+              summary={
+                <>
+                  {q}
+                  <span className="mt-1 grid size-6 shrink-0 place-items-center rounded-full border border-rule-strong transition-[transform,background-color,border-color] duration-300 ease-out-expo group-data-[expanded]:rotate-45 group-data-[expanded]:border-field group-data-[expanded]:bg-field group-data-[expanded]:text-on-field">
+                    <Plus aria-hidden="true" className="size-4" />
+                  </span>
+                </>
+              }
+            >
               <p className="max-w-[68ch] pb-6 text-ink-2">{a}</p>
-            </details>
+            </SmoothDetails>
           ))}
         </div>
       </div>
@@ -282,8 +297,8 @@ export function GetStarted() {
         <div className="mt-12 grid gap-8 lg:grid-cols-12 lg:items-end">
           <div className="lg:col-span-6">
             <p className="max-w-[48ch] text-[1.15rem] font-medium">
-              Tell us about your project objectives, operational workflows, or technical constraints. We will help
-              structure a clear development path and architectural plan.
+              Tell us about your project objectives, operational workflows, or technical constraints. We will
+              help structure a clear development path and architectural plan.
             </p>
             <ul className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-[0.95rem] font-medium">
               {["Architectural Scoping", "Requirement Discovery", "Disciplined Delivery"].map((b) => (

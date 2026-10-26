@@ -58,13 +58,21 @@ export function CustomCursor() {
     };
     // Scrolling moves the page under a still mouse; re-check what is under it every scroll frame,
     // otherwise a section can hide the normal cursor while the custom one never appears.
+    // A hit test costs a layout, so: never on pages without cursor zones, at most every 100ms while
+    // scrolling, and once more when the scroll settles.
     let frame = 0;
+    let last = 0;
+    let settle = 0;
+    const recheck = () => {
+      frame = 0;
+      last = performance.now();
+      sync(document.elementFromPoint(px, py), px, py);
+    };
     const onScroll = () => {
-      if (px < 0 || frame) return;
-      frame = requestAnimationFrame(() => {
-        frame = 0;
-        sync(document.elementFromPoint(px, py), px, py);
-      });
+      if (px < 0 || frame || !document.querySelector("[data-cursor]")) return;
+      clearTimeout(settle);
+      settle = window.setTimeout(recheck, 120);
+      if (performance.now() - last > 100) frame = requestAnimationFrame(recheck);
     };
     const onLeave = () => {
       px = -1;
@@ -79,6 +87,7 @@ export function CustomCursor() {
       removeEventListener("pointermove", onMove);
       removeEventListener("scroll", onScroll);
       cancelAnimationFrame(frame);
+      clearTimeout(settle);
       document.documentElement.removeEventListener("pointerleave", onLeave);
     };
   }, []);

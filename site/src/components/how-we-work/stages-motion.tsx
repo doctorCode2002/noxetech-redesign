@@ -3,7 +3,7 @@
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { createContext, useContext, useRef, useState } from "react";
-import { onFirstInteraction, whenIdle } from "@/lib/idle";
+import { whenIdle, whenNear } from "@/lib/idle";
 import { settleScrollTriggers } from "@/lib/scroll-settle";
 import { prefersReducedMotion } from "../motion/motion-provider";
 import { ScrambleValue } from "../scramble";
@@ -30,7 +30,7 @@ export function StagesMotion({ children, ...props }: React.ComponentProps<"secti
     (_ctx, contextSafe) => {
       if (prefersReducedMotion()) return;
       const section = root.current!;
-      const schedule = matchMedia("(min-width: 1024px) and (hover: hover)").matches ? whenIdle : onFirstInteraction;
+      const schedule = matchMedia("(min-width: 1024px) and (hover: hover)").matches ? whenIdle : (cb: () => void) => whenNear(root.current!, cb);
       const cancel = schedule(
         contextSafe!(() => {
           section.classList.add("is-live");

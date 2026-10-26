@@ -4,7 +4,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { useRef } from "react";
-import { onFirstInteraction, whenIdle } from "@/lib/idle";
+import { whenIdle, whenNear } from "@/lib/idle";
 import { settleScrollTriggers } from "@/lib/scroll-settle";
 import { prefersReducedMotion } from "../motion/motion-provider";
 import { entities } from "./compile-data";
@@ -171,10 +171,11 @@ export function CompileMotion({ children, ...props }: React.ComponentProps<"sect
       };
       let cleanup: (() => void) | undefined;
       // Desktop has the headroom to build right after load (so jumps and back navigation land correctly);
-      // phones wait for the first scroll to keep loading light.
+      // phones build each scene just before it scrolls into view (whenNear), keeping load and the
+      // first swipe light.
       const schedule = matchMedia("(min-width: 1024px) and (hover: hover)").matches
         ? whenIdle
-        : onFirstInteraction;
+        : (cb: () => void) => whenNear(root.current!, cb);
       const cancel = schedule(contextSafe!(() => (cleanup = build())));
       return () => {
         cancel();

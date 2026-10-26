@@ -1,6 +1,8 @@
 import { ArrowLeft } from "lucide-react";
 import { TransitionLink } from "@/components/motion/transition-link";
 import { CustomRequestForm } from "@/components/sms-switch/custom-request-form";
+import { HeroBackdrop } from "@/components/hero-art/hero-backdrop";
+import { SmsCustomRequestArt } from "@/components/hero-art/sms-custom-request";
 import { pageMeta } from "@/lib/meta";
 
 export const metadata = pageMeta("/solutions/sms-switch/custom-request", "Request a Custom Version — NoxeTech SMS Switch", "Need a tailored SMS Switch? Contact our technical team to build a custom version based on your traffic, routing, SMPP, reporting, security, and operational requirements.");
@@ -8,7 +10,10 @@ export const metadata = pageMeta("/solutions/sms-switch/custom-request", "Reques
 export default function SolutionsSmsSwitchCustomRequestPage() {
   return (
     <>
-      <section className="drafting-grid border-b border-rule">
+      <section className="drafting-grid relative isolate overflow-hidden border-b border-rule">
+        <HeroBackdrop>
+          <SmsCustomRequestArt />
+        </HeroBackdrop>
         <div className="shell pb-16 pt-8 sm:pb-20 sm:pt-12">
           <TransitionLink
             href="/solutions/sms-switch"
