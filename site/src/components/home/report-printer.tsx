@@ -6,7 +6,7 @@ import { CircleCheck, Hand, LoaderCircle, Printer, X } from "lucide-react";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { play } from "@/lib/sound";
-import { prefersReducedMotion, useMotion } from "../motion/motion-provider";
+import { lockScroll, prefersReducedMotion, unlockScroll, useMotion } from "../motion/motion-provider";
 import { HandBack, HandThumb } from "./hands";
 import { PAGE_H, PAGE_W, ReportDocument, type ReportLine } from "./report-document";
 
@@ -96,7 +96,7 @@ export function ReportPrinter({ lines, issues }: { lines: ReportLine[]; issues: 
   function pickUp() {
     if (stage !== "done" || held) return;
     play("tap");
-    lenis?.stop();
+    lockScroll(lenis);
     setHeld(true);
   }
 
@@ -108,7 +108,7 @@ export function ReportPrinter({ lines, issues }: { lines: ReportLine[]; issues: 
       closing.current = false;
       setHeld(false);
       gsap.set(sheet.current, { autoAlpha: 1 });
-      lenis?.start();
+      unlockScroll(lenis);
       sheet.current?.focus({ preventScroll: true });
     };
     if (prefersReducedMotion()) return finish();

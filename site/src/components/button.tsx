@@ -29,7 +29,13 @@ type Common = {
   className?: string;
 };
 
-type AsLink = Common & { href: string; sheetLabel?: string };
+type AsLink = Common & {
+  href: string;
+  sheetLabel?: string;
+  /** Another site: a plain link that opens in a new tab, without the page transition. */
+  external?: boolean;
+  onClick?: React.MouseEventHandler<HTMLAnchorElement>;
+};
 type AsButton = Common & { href?: undefined } & Omit<
     React.ComponentPropsWithRef<"button">,
     "children" | "className"
@@ -42,8 +48,22 @@ export function Button(props: AsLink | AsButton) {
   const cls = `inline-flex items-center justify-center gap-2 whitespace-nowrap font-semibold transition-[background-color,border-color,color,text-decoration-color] duration-150 disabled:cursor-not-allowed disabled:opacity-50 ${sizes[size]} ${isText ? "" : pad[size]} ${styles[variant]} ${className}`;
 
   if (props.href !== undefined) {
+    if (props.external) {
+      return (
+        <a
+          href={props.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={props.onClick}
+          className={cls}
+        >
+          {children}
+          <span className="sr-only"> (opens in a new tab)</span>
+        </a>
+      );
+    }
     return (
-      <TransitionLink href={props.href} sheetLabel={props.sheetLabel} className={cls}>
+      <TransitionLink href={props.href} sheetLabel={props.sheetLabel} onClick={props.onClick} className={cls}>
         {children}
       </TransitionLink>
     );

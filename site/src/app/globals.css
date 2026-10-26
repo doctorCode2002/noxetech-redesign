@@ -103,10 +103,6 @@
   p {
     text-wrap: pretty;
   }
-  ::-webkit-scrollbar { width: 10px; height: 10px; }
-  ::-webkit-scrollbar-track { background: var(--paper); }
-  ::-webkit-scrollbar-thumb { background: var(--rule-strong); border: 2px solid var(--paper); border-radius: 6px; }
-  html { scrollbar-color: var(--rule-strong) var(--paper); }
 }
 
 @layer components {
@@ -346,4 +342,17 @@ html {
   }
   ::-webkit-scrollbar-thumb:hover { border-width: 2px; }
   ::-webkit-scrollbar-corner { background: var(--paper); }
+}
+
+/* Print: any page prints as a clean light document without the site chrome. */
+@media print {
+  @page { margin: 18mm 16mm; }
+  :root, [data-theme="dark"] {
+    --paper: #fff; --sheet: #fff; --ink: #000; --ink-2: #1f2125; --ink-3: #4b4f57;
+    --rule: #c9ccd2; --rule-strong: #9a9fa8; --redline-ink: #9a3412; --redline-wash: transparent;
+    color-scheme: light;
+  }
+  body > header, header.fixed, footer, .loader, .fixed { display: none !important; }
+  #main { padding-top: 0 !important; }
+  .shell { max-width: none; padding-inline: 0; }
 }

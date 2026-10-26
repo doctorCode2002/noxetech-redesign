@@ -45,7 +45,8 @@ export function ProcessMotion({ children, ...props }: React.ComponentProps<"sect
             gsap.to(track, {
               x: () => -distance(),
               ease: "none",
-              scrollTrigger: { ...scrollTrigger, pin: true },
+              // anticipatePin applies the pin a moment early, so fast scrolls don't show a jump.
+              scrollTrigger: { ...scrollTrigger, pin: true, anticipatePin: 1 },
             });
             gsap.fromTo("[data-progress]", { scaleX: 0 }, { scaleX: 1, ease: "none", scrollTrigger });
             settleScrollTriggers();

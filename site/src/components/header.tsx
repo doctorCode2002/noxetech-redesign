@@ -8,7 +8,7 @@ import { useEffect, useRef, useState } from "react";
 import { nav } from "@/lib/site";
 import { Logo } from "./logo";
 import { TransitionLink } from "./motion/transition-link";
-import { useMotion } from "./motion/motion-provider";
+import { lockScroll, unlockScroll, useMotion } from "./motion/motion-provider";
 import { Button } from "./button";
 import { ThemeToggle } from "./theme-toggle";
 
@@ -54,8 +54,8 @@ export function Header() {
   }, []);
 
   useEffect(() => {
-    if (open) lenis?.stop();
-    else lenis?.start();
+    if (open) lockScroll(lenis);
+    else unlockScroll(lenis);
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpenOn(null);
     if (open) addEventListener("keydown", onKey);
     return () => removeEventListener("keydown", onKey);

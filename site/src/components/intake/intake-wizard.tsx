@@ -1,7 +1,8 @@
 "use client";
 
 import gsap from "gsap";
-import { Check, CircleAlert, Info } from "lucide-react";
+import { Check, Info } from "lucide-react";
+import { Choice, Counter, ErrorNote, helper, input, label } from "../form/fields";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "../button";
 import { TransitionLink } from "../motion/transition-link";
@@ -77,72 +78,6 @@ const empty: Data = {
 };
 
 const UNDO_SECONDS = 5;
-
-/* ---------- small field primitives ---------- */
-
-const label = "block text-xs font-semibold uppercase tracking-[0.08em] text-ink";
-const input =
-  "mt-2 w-full rounded-lg border border-rule-strong bg-paper px-4 py-3 text-ink placeholder:text-ink-3 focus:border-ink focus:outline-none";
-const helper = "mt-2 text-sm text-ink-3";
-
-function ErrorNote({ text, id }: { text?: string; id?: string }) {
-  if (!text) return null;
-  return (
-    <p
-      id={id}
-      role="alert"
-      className="mt-2 flex items-center gap-2 text-sm text-[#b91c1c] dark:text-[#f87171]"
-    >
-      <CircleAlert className="size-4 shrink-0" /> {text}
-    </p>
-  );
-}
-
-function Choice({
-  type,
-  name,
-  checked,
-  onChange,
-  title,
-  desc,
-}: {
-  type: "radio" | "checkbox";
-  name: string;
-  checked: boolean;
-  onChange: () => void;
-  title: string;
-  desc?: string;
-}) {
-  return (
-    <label
-      className={`relative flex cursor-pointer gap-3 rounded-xl border p-4 transition-colors ${
-        checked ? "border-field bg-redline-wash" : "border-rule hover:border-rule-strong"
-      }`}
-    >
-      <input type={type} name={name} checked={checked} onChange={onChange} className="peer sr-only" />
-      <span
-        aria-hidden="true"
-        className={`mt-1 inline-flex size-5 shrink-0 items-center justify-center border transition-colors peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-field ${
-          type === "radio" ? "rounded-full" : "rounded-md"
-        } ${checked ? "border-field bg-field text-on-field" : "border-rule-strong"}`}
-      >
-        {checked && <Check className="size-3.5" strokeWidth={3} />}
-      </span>
-      <span>
-        <span className="block font-semibold text-ink">{title}</span>
-        {desc && <span className="mt-1 block text-sm text-ink-2">{desc}</span>}
-      </span>
-    </label>
-  );
-}
-
-function Counter({ value, max }: { value: string; max: number }) {
-  return (
-    <p className="figures mt-2 text-right text-xs text-ink-3">
-      {value.length} / {max} characters
-    </p>
-  );
-}
 
 /* ---------- the wizard ---------- */
 

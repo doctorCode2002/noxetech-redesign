@@ -82,6 +82,7 @@ export function CompileMotion({ children, ...props }: React.ComponentProps<"sect
               start: "top top",
               end: "+=170%",
               pin: true,
+              anticipatePin: 1,
               scrub: 0.8,
               invalidateOnRefresh: true,
               onUpdate: (self) => {
