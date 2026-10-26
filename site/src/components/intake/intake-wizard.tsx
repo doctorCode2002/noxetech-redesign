@@ -258,6 +258,8 @@ export function IntakeWizard() {
                   disabled={!can}
                   onClick={() => can && goTo(n)}
                   aria-current={n === step ? "step" : undefined}
+                  // The visible step name is hidden on phones; the button keeps its name everywhere.
+                  aria-label={`Step ${n}: ${name}`}
                   className="group w-full text-left disabled:cursor-not-allowed"
                 >
                   <span

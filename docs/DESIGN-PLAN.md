@@ -9,7 +9,7 @@ Development-only document. Never copy any of this into site source, comments, or
 - Contact: projects@noxetech.com. Do not invent clients, case studies, numbers or testimonials.
 
 ## Audience and scene
-Founders, operations managers and telecom operators. They read during the workday: on laptops in bright offices, and on phones between meetings. NOC/telecom buyers often work in dim rooms on dark screens. The use scenes call for both themes, so the site **follows the system theme** and has a manual toggle.
+Founders, operations managers and telecom operators. They read during the workday: on laptops in bright offices, and on phones between meetings. NOC/telecom buyers often work in dim rooms on dark screens. The use scenes call for both themes. The site is **dark by default** (the brand's original home, and what telecom buyers live in) with a manual light toggle that is remembered.
 
 ## Mode
 Persuade (marketing site). Start a Project, Contact and Portal are Operate surfaces: there the design stays restrained and precise.

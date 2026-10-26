@@ -45,8 +45,22 @@ How every inner page of the NoxeTech redesign is built. The homepage (`site/src/
   `python3 -I site/scripts/grid-audit.py site/src` (must report 0 for your files).
 - **Buttons.** Only the shared `Button` (`components/button.tsx`): `href` makes a link with the page
   transition, otherwise it is a real `<button>`. Variants: `primary` (orange), `ink` (black, for use on
-  orange), `solid` (theme-following), `secondary` (outlined), `text`, `text-field`; sizes `md`/`sm`.
-  Internal text links use `TransitionLink`.
+  orange), `solid` (theme-following), `secondary` (outlined), `text`, `text-field`; sizes `md`/`sm`;
+  `external` for another site (new tab, no transition); `onClick` works on links too.
+  Internal text links use `TransitionLink`. It prefetches on hover/touch/focus, not on sight (that
+  parsed route data mid-scroll); don't add `prefetch` unless it's primary navigation.
+- **In-page links.** Use plain `<a href="#id">` (or `Button`/`TransitionLink` with `/page#id`). One
+  site-wide handler glides there and keeps the hash; give the target section a `scroll-mt-*` to clear the
+  fixed header (it lands at the element's scroll-margin; 88px when it has none). No custom jump code.
+- **Hero background.** Every page hero is `<section className="drafting-grid relative isolate
+  overflow-hidden border-b border-rule">` with `<HeroBackdrop><YourArt /></HeroBackdrop>` as its first child
+  (`components/hero-art/`). The art is one SVG (`viewBox="0 0 1440 720" preserveAspectRatio="xMaxYMid
+  slice"`) that hints at the page's subject: thin `var(--rule-strong)` lines, `var(--field)` accents,
+  `var(--paper)` fills, a scoped `<style>`, slow CSS keyframes on transform/opacity only, no text. Frame
+  any panel on the right instead of hiding behind it. References: `services.tsx`, `sms-switch.tsx`.
+- **Accordions / disclosures.** `SmoothDetails` (native `<details>` that animates both ways) or
+  `Collapse open={…}` from `components/collapse.tsx`. Never mount/unmount content to show it: that can't
+  animate closed.
 - **Forms.** Use `components/form/fields.tsx`: `label`, `input`, `helper` class strings, `ErrorNote`,
   `Choice` (radio/checkbox cards), `Counter`, `PreviewNote`. The site has no backend: forms validate
   for real, simulate the submit in the browser, send nothing over the network, and show `PreviewNote` on
@@ -90,9 +104,13 @@ sentences.
 - Pins: add `anticipatePin: 1`. Never put `transform`, `filter` or `will-change` on an ancestor of a pinned
   or `position: fixed` element (it breaks fixed positioning); `will-change` only on the animated element.
   Use `gsap.ticker` for per-frame work.
-- Heavy scroll scenes (pins, scrubs) build lazily: `whenIdle` on desktop, `onFirstInteraction` on phones
-  (`lib/idle.ts`, see `process-motion.tsx`), and call `settleScrollTriggers()` (`lib/scroll-settle.ts`)
-  after creating ScrollTriggers.
+- Heavy scroll scenes (pins, scrubs) build lazily: `whenIdle` on desktop, `whenNear(root, cb)` on phones
+  (built just before the section scrolls into view; never inside the first touch, which made the first
+  swipe stutter). See `lib/idle.ts` and `process-motion.tsx`, and call `settleScrollTriggers()`
+  (`lib/scroll-settle.ts`) after creating ScrollTriggers.
+- Per-scroll work: never read layout (`getBoundingClientRect`, `scrollHeight`, `elementFromPoint`) in a
+  scroll or frame handler; cache measurements and refresh them from a `ResizeObserver`.
+- No `backdrop-filter` on fixed or sticky elements other than the header capsule.
 - Animate `transform` and `opacity` only; no layout properties per frame. No canvas or WebGL backgrounds.
 - Every animation respects reduced motion: check `prefersReducedMotion()` (from `motion-provider`) and
   show the final state instead.
@@ -105,8 +123,8 @@ sentences.
 2. `python3 -I site/scripts/grid-audit.py site/src` reports 0.
 3. Screenshots with Playwright (`uv run --with playwright python -I <script>`, Chromium at
    `/usr/bin/chromium`, args `["--use-angle=swiftshader"]`), saved in your scratchpad: each of your pages
-   at 1440×900 and on `p.devices["Pixel 7"]`, in light and dark (add an init script
-   `localStorage.setItem("theme", "dark")` before load). Check for horizontal
+   at 1440×900 and on `p.devices["Pixel 7"]`, in dark (the default) and light (add an init script
+   `localStorage.setItem("theme", "light")` before load). Check for horizontal
    overflow (`document.documentElement.scrollWidth > innerWidth`). Look at the screenshots yourself and
    fix what is off. Do not use the Claude in Chrome browser tools (another session is using them).
 4. Click through your interactive pieces in Playwright to make sure they work.

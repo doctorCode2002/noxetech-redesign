@@ -43,7 +43,9 @@ export function Scramble({ children, className }: { children: string; className?
   }, [children]);
 
   return (
-    <span className={className} aria-label={children}>
+    // Screen readers get the real text once; the scrambling copy is hidden from them.
+    <span className={className}>
+      <span className="sr-only">{children}</span>
       <span ref={el} aria-hidden="true">
         {children}
       </span>
