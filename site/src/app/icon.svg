@@ -1,0 +1,54 @@
+<svg width="32" height="32" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="favOrangeGrad" x1="12" y1="6" x2="88" y2="88" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFA100" />
+      <stop offset="100%" stop-color="#FF6B00" />
+    </linearGradient>
+  </defs>
+
+  <!-- Bottom-Left Charcoal Outer Track -->
+  <path
+    d="M 12 56 L 12 72 L 40 88"
+    stroke="#8D93A3"
+    stroke-width="7"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+
+  <!-- Bottom-Left Charcoal Inner Track -->
+  <path
+    d="M 24 54 L 24 65 L 38 73"
+    stroke="#8D93A3"
+    stroke-width="6.5"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+
+  <!-- Right Charcoal Vertical Pillar -->
+  <path
+    d="M 88 52 L 88 72"
+    stroke="#8D93A3"
+    stroke-width="7"
+    stroke-linecap="round"
+  />
+
+  <!-- Top Orange Hexagonal Circuit Segment with Node -->
+  <path
+    d="M 12 42 L 12 28 L 50 6 L 82 24 L 82 32"
+    stroke="url(#favOrangeGrad)"
+    stroke-width="7"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+  <circle cx="82" cy="34" r="5.5" fill="#FF7800" stroke="#111215" stroke-width="2" />
+
+  <!-- Main Diagonal Orange 'N' Circuit Bridge with Node -->
+  <path
+    d="M 12 28 L 82 68 L 58 82"
+    stroke="url(#favOrangeGrad)"
+    stroke-width="7.5"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+  <circle cx="56" cy="83" r="5.5" fill="#FF7800" stroke="#111215" stroke-width="2" />
+</svg>

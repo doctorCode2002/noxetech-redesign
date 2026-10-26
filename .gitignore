@@ -1,0 +1,14 @@
+# Kept local only: copies of the live site (HTML, compiled JS, screenshots),
+# heavy Lighthouse/screenshot comparison output, and downloaded third-party skills.
+/scrape/
+/comparison/
+/.claude/
+
+# Build and tooling output
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+.vercel
+.env*
+.DS_Store

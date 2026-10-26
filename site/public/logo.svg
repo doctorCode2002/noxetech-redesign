@@ -1,0 +1,63 @@
+<svg width="280" height="70" viewBox="0 0 280 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="logoOrangeGrad" x1="10" y1="5" x2="65" y2="65" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFA100" />
+      <stop offset="100%" stop-color="#FF6B00" />
+    </linearGradient>
+  </defs>
+
+  <!-- Mark Group (Scaled to fit 70px height) -->
+  <g transform="translate(4, 5) scale(0.6)">
+    <!-- Bottom-Left Charcoal Outer Track -->
+    <path
+      d="M 12 56 L 12 72 L 40 88"
+      stroke="#D9D2C5"
+      stroke-width="7"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+
+    <!-- Bottom-Left Charcoal Inner Track -->
+    <path
+      d="M 24 54 L 24 65 L 38 73"
+      stroke="#D9D2C5"
+      stroke-width="6.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+
+    <!-- Right Charcoal Vertical Pillar -->
+    <path
+      d="M 88 52 L 88 72"
+      stroke="#D9D2C5"
+      stroke-width="7"
+      stroke-linecap="round"
+    />
+
+    <!-- Top Orange Hexagonal Circuit Segment with Node -->
+    <path
+      d="M 12 42 L 12 28 L 50 6 L 82 24 L 82 32"
+      stroke="url(#logoOrangeGrad)"
+      stroke-width="7"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+    <circle cx="82" cy="34" r="5.5" fill="#FF7800" stroke="#111215" stroke-width="2" />
+
+    <!-- Main Diagonal Orange 'N' Circuit Bridge with Node -->
+    <path
+      d="M 12 28 L 82 68 L 58 82"
+      stroke="url(#logoOrangeGrad)"
+      stroke-width="7.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+    <circle cx="56" cy="83" r="5.5" fill="#FF7800" stroke="#111215" stroke-width="2" />
+  </g>
+
+  <!-- Wordmark Text -->
+  <text x="75" y="46" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Plus Jakarta Sans', sans-serif" font-weight="700" font-size="34" letter-spacing="-0.5">
+    <tspan fill="#F4F4F6">Noxe</tspan>
+    <tspan fill="#FF7800">Tech</tspan>
+  </text>
+</svg>
