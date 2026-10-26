@@ -24,14 +24,19 @@ const plexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(site.url),
+  // Absolute URLs for share images and og:url follow the domain the site is deployed on (Vercel sets
+  // this to the production domain: the preview now, noxetech.com once it is attached), so share
+  // images always resolve. Canonicals stay on noxetech.com (see lib/meta.ts).
+  metadataBase: new URL(
+    process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : site.url,
+  ),
   title: {
     default: "Custom Software & Technology Solutions | NoxeTech",
     template: "%s | NoxeTech",
   },
   description: site.description,
   applicationName: site.name,
-  alternates: { canonical: "/" },
+  alternates: { canonical: site.url },
   openGraph: {
     type: "website",
     siteName: site.name,
